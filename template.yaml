@@ -36,6 +36,25 @@ Resources:
           PARAM1: VALUE
       FunctionUrlConfig:
         AuthType: NONE
+  S3UploadFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Metadata:
+      BuildMethod: go1.x
+    Properties:
+      CodeUri: s3event/
+      Handler: bootstrap
+      Runtime: provided.al2023
+      Architectures:
+      - x86_64
+    Events:
+      S3ObjectCreatedEvent:
+      Type: S3
+      Properties:
+        Bucket: !Ref S3InputBucket
+        Events: s3:ObjectCreated:*
+    LoggingConfig:
+      LogFormat: Text
+
   # S3
   S3InputBucket:
     Type: AWS::S3::Bucket
