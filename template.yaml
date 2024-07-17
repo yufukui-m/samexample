@@ -14,6 +14,12 @@ Globals:
     # You can add LoggingConfig parameters such as the Logformat, Log Group, and SystemLogLevel or ApplicationLogLevel. Learn more here https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html#sam-function-loggingconfig.
     LoggingConfig:
       LogFormat: JSON
+
+Parameters:
+  BucketName:
+    Type: String
+    Default: "sam-input-test-20240718"
+
 Resources:
   HelloWorldFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -30,6 +36,12 @@ Resources:
           PARAM1: VALUE
       FunctionUrlConfig:
         AuthType: NONE
+  # S3
+  S3InputBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref BucketName
+
 
 Outputs:
   HelloWorldFunction:
