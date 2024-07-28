@@ -55,6 +55,13 @@ Resources:
     LoggingConfig:
       LogFormat: Text
 
+  S3UploadLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${S3UploadFunction}
+      RetentionInDays: 3
+
+
   # S3
   S3InputBucket:
     Type: AWS::S3::Bucket
