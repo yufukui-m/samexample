@@ -46,14 +46,14 @@ Resources:
       Runtime: provided.al2023
       Architectures:
       - x86_64
-    Events:
-      S3ObjectCreatedEvent:
-      Type: S3
-      Properties:
-        Bucket: !Ref S3InputBucket
-        Events: s3:ObjectCreated:*
-    LoggingConfig:
-      LogFormat: Text
+      Events:
+        S3ObjectCreatedEvent:
+          Type: S3
+          Properties:
+            Bucket: !Ref S3InputBucket
+            Events: "s3:ObjectCreated:*"
+      LoggingConfig:
+        LogFormat: Text
 
   S3UploadLogGroup:
     Type: AWS::Logs::LogGroup
@@ -61,6 +61,14 @@ Resources:
       LogGroupName: !Sub /aws/lambda/${S3UploadFunction}
       RetentionInDays: 3
 
+  S3UploadInvokePermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      FunctionName: !GetAtt S3UploadFunction.Arn
+      Action: 'lambda:InvokeFunction'
+      Principal: 's3.amazonaws.com'
+      SourceAccount: !Ref 'AWS::AccountId'
+      SourceArn: !GetAtt S3UploadFunction.Arn
 
   # S3
   S3InputBucket:
